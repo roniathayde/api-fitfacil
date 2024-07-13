@@ -1,5 +1,6 @@
 import { UsersRepository } from '@/repositories/users-repository'
-import { createUserUseCase } from '@/use-cases/users/create-user-use-case'
+import { UserAlreadyExistsError } from '@/use-cases/errors/user-already-exists-error'
+import { CreateUserUseCase } from '@/use-cases/users/create-user-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -20,9 +21,9 @@ export async function createUserController(
     const { email, full_name, password, phone_number, role, username } =
       createBodySchema.parse(request.body)
     const userRepository = new UsersRepository()
-    const userUseCase = new createUserUseCase(userRepository)
+    const createUserUseCase = new CreateUserUseCase(userRepository)
 
-    await userUseCase.execute({
+    await createUserUseCase.execute({
       email,
       full_name,
       password,
@@ -33,6 +34,9 @@ export async function createUserController(
 
     return reply.status(201).send({ message: 'usuário criado' })
   } catch (error) {
-    console.log(error)
+    if (error instanceof UserAlreadyExistsError) {
+      return reply.status(400).send({ message: 'E-mail já cadastrado' })
+    }
+    throw error
   }
 }

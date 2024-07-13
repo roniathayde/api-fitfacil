@@ -22,7 +22,7 @@ model User {
   id           String  @id @default(uuid())
   username     String
   password     String
-  email        String
+  email        String  @unique
   full_name    String
   phone_number String
   role         Role    @default(TREINADOR)
