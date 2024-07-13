@@ -1,5 +1,5 @@
-import { UsersRepositoryContract } from "@/repositories/contracts/users-repository-contract";
-import {  Role } from "@prisma/client";
+import { UsersRepositoryContract } from '@/repositories/contracts/users-repository-contract'
+import { Role } from '@prisma/client'
 
 export interface createUserUseCaseRequest {
   username: string
@@ -10,14 +10,25 @@ export interface createUserUseCaseRequest {
   role: Role
 }
 
-
 export class createUserUseCase {
-  constructor( private createUserRepository: UsersRepositoryContract) {}
+  constructor(private createUserRepository: UsersRepositoryContract) {}
 
-  async execute( {email,full_name,password,phone_number,role,username} : createUserUseCaseRequest  ) {
-
-    const user = await this.createUserRepository.create({email,full_name,password,phone_number,role,username})
-
+  async execute({
+    email,
+    full_name,
+    password,
+    phone_number,
+    role,
+    username,
+  }: createUserUseCaseRequest) {
+    const user = await this.createUserRepository.create({
+      email,
+      full_name,
+      password,
+      phone_number,
+      role,
+      username,
+    })
 
     return { user }
   }

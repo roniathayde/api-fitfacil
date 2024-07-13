@@ -1,0 +1,12 @@
+{
+  "extends":[ "plugin:prettier/recommended", "eslint:recommended"],
+  "plugins": ["plugin:prettier/recommended"],
+  "rules": {
+    "vars-on-top": "error",
+    "camelcase": "off",
+    "no-useless-constructor":"off",
+    "no-unused-vars": "off",
+    "prettier/prettier": "error",
+    "indent": "error"
+  }
+}
