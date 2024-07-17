@@ -1,7 +1,7 @@
 import { UsersRepositoryContract } from '@/repositories/contracts/users-repository-contract'
 import { Role } from '@prisma/client'
 import bcriptjs from 'bcryptjs'
-import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
+import { UserAlreadyExistsError } from '../../errors/user-already-exists-error'
 
 export interface createUserUseCaseRequest {
   username: string
