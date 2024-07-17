@@ -2,8 +2,11 @@ import { fastify } from 'fastify'
 import { userRoutes } from './http/controllers/user/routes'
 import { env } from 'process'
 import { ZodError } from 'zod'
+import { fastifyCookie } from '@fastify/cookie'
 
 export const app = fastify()
+
+app.register(fastifyCookie)
 
 app.register(userRoutes)
 

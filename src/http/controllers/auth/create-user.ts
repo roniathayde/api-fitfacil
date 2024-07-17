@@ -1,6 +1,6 @@
 import { UsersRepository } from '@/repositories/users-repository'
 import { UserAlreadyExistsError } from '@/use-cases/errors/user-already-exists-error'
-import { CreateUserUseCase } from '@/use-cases/users/create-user-use-case'
+import { CreateUserUseCase } from '@/use-cases/users/auth/create-user-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
