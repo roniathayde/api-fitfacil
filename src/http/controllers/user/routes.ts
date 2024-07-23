@@ -11,6 +11,7 @@ export async function userRoutes(app: FastifyInstance) {
     '/test',
     { onRequest: verifyJwt },
     async (request: FastifyRequest, reply: FastifyReply) => {
+      console.log('user: ', request.user)
       reply.status(200).send({ message: 'passou' })
     },
   )
