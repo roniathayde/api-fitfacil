@@ -18,23 +18,52 @@ enum Role {
   TREINADOR
 }
 
+enum Difficulty {
+  FACIL
+  MEDIO
+  DIFICIL
+}
+
 model User {
-  id           String  @id @default(uuid())
+  id           String @id @default(uuid())
   username     String
   password     String
-  email        String  @unique
+  email        String @unique
   full_name    String
   phone_number String
-  role         Role    @default(TREINADOR)
-  Trains       Trains? @relation(fields: [trainsId], references: [id])
-  trainsId     String?
+
+  UserTrains UserTrains[]
+}
+
+model UserTrains {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  trains   Trains @relation(fields: [trainsId], references: [id])
+  trainsId String
+
+  role Role @default(TREINADOR)
 }
 
 model Trains {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  done        Boolean
-  created_at  DateTime
-  user        User[]
+  id              String     @id @default(uuid())
+  title           String
+  description     String
+  done            Boolean
+  scheduled_to    DateTime
+  duration_in_sec String
+  created_at      DateTime
+  difficulty      Difficulty @default(MEDIO)
+
+  categoryId String
+  Category   Category[]
+  UserTrains UserTrains[]
+}
+
+model Category {
+  id       String @id @default(uuid())
+  name     String
+  trains   Trains @relation(fields: [trainsId], references: [id])
+  trainsId String
 }
