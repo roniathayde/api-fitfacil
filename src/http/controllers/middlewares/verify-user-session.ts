@@ -24,8 +24,7 @@ export async function verifyJwt(request: FastifyRequest, reply: FastifyReply) {
 
           const newJwtToken = jwt.sign(
             {
-              id: payload.id,
-              role: payload.role,
+              sub: payload.id,
             },
             env.JWT_SECRET_KEY,
             {

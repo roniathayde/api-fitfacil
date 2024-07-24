@@ -1,5 +1,5 @@
 import { UsersRepositoryContract } from '@/repositories/contracts/users-repository-contract'
-import { Role } from '@prisma/client'
+
 import bcriptjs from 'bcryptjs'
 import { UserAlreadyExistsError } from '../../errors/user-already-exists-error'
 
@@ -9,7 +9,6 @@ export interface createUserUseCaseRequest {
   email: string
   full_name: string
   phone_number: string
-  role: Role
 }
 
 export class CreateUserUseCase {
@@ -20,7 +19,6 @@ export class CreateUserUseCase {
     full_name,
     password,
     phone_number,
-    role,
     username,
   }: createUserUseCaseRequest) {
     const passwordHashed = await bcriptjs.hash(password, 6)
@@ -36,7 +34,6 @@ export class CreateUserUseCase {
       full_name,
       password: passwordHashed,
       phone_number,
-      role,
       username,
     })
 

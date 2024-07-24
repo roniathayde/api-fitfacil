@@ -50,13 +50,13 @@ model Trains {
   id              String     @id @default(uuid())
   title           String
   description     String
-  done            Boolean
+  done            Boolean    @default(false)
   scheduled_to    DateTime
   duration_in_sec String
-  created_at      DateTime
+  created_at      DateTime   @default(now())
   difficulty      Difficulty @default(MEDIO)
 
-  categoryId String
+  categoryId String?
   Category   Category[]
   UserTrains UserTrains[]
 }

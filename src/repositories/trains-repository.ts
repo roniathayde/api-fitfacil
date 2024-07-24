@@ -1,11 +1,28 @@
 import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import { TrainsRepositoryContract } from './contracts/trains-repository-contract'
+import dayjs from 'dayjs'
 
 export class TrainsRepository implements TrainsRepositoryContract {
-  async createTrain(data: Prisma.TrainsCreateInput, userId: string) {
+  async createTrain(
+    {
+      title,
+      description,
+      scheduled_to,
+      duration_in_sec,
+      difficulty,
+    }: Prisma.TrainsCreateInput,
+    userId: string,
+  ) {
+    console.log()
     const train = await prisma.trains.create({
-      data,
+      data: {
+        title,
+        description,
+        scheduled_to: dayjs(scheduled_to).toDate(),
+        duration_in_sec,
+        difficulty,
+      },
     })
 
     await prisma.userTrains.create({

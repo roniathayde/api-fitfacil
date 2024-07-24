@@ -10,7 +10,6 @@ const createBodySchema = z.object({
   email: z.string().email(),
   full_name: z.string(),
   phone_number: z.string(),
-  role: z.enum(['ALUNO', 'TREINADOR']),
 })
 
 export async function createUserController(
@@ -18,7 +17,7 @@ export async function createUserController(
   reply: FastifyReply,
 ) {
   try {
-    const { email, full_name, password, phone_number, role, username } =
+    const { email, full_name, password, phone_number, username } =
       createBodySchema.parse(request.body)
     const userRepository = new UsersRepository()
     const createUserUseCase = new CreateUserUseCase(userRepository)
@@ -28,7 +27,6 @@ export async function createUserController(
       full_name,
       password,
       phone_number,
-      role,
       username,
     })
 

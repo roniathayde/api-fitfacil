@@ -27,8 +27,7 @@ export async function signInUserController(
 
     const jwtToken = jwt.sign(
       {
-        id: user.id,
-        role: user.role,
+        sub: user.id,
       },
       env.JWT_SECRET_KEY,
       {
