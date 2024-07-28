@@ -1,32 +1,30 @@
 import { TrainsRepository } from '@/repositories/trains-repository'
-import { UserAlreadyExistsError } from '@/use-cases/errors/user-already-exists-error'
 import { CreateTrainUseCase } from '@/use-cases/trains/create-trains-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-
-const createTrainBodySchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  scheduled_to: z.string(),
-  duration_in_sec: z.string(),
-  difficulty: z.enum(['FACIL', 'MEDIO', 'DIFICIL']),
-})
+import { UserPayload } from '../middlewares/verify-user-session'
 
 export async function createTrainController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
   try {
+    const createTrainBodySchema = z.object({
+      title: z.string(),
+      description: z.string(),
+      scheduled_to: z.string(),
+      duration_in_sec: z.string(),
+      difficulty: z.enum(['FACIL', 'MEDIO', 'DIFICIL']),
+    })
+
     const { title, description, scheduled_to, duration_in_sec, difficulty } =
       createTrainBodySchema.parse(request.body)
-    const { sub } = request.user
+
+    const user = request.user as UserPayload
+    const userId = user.sub
+
     const trainsRepository = new TrainsRepository()
     const createTrainUseCase = new CreateTrainUseCase(trainsRepository)
-
-    console.log(request.user)
-    if (!sub) {
-      return reply.status(400).send({ message: 'Erro de autenticação' })
-    }
 
     await createTrainUseCase.execute(
       {
@@ -36,14 +34,13 @@ export async function createTrainController(
         duration_in_sec,
         difficulty,
       },
-      sub,
+      userId,
     )
 
-    return reply.status(201).send({ message: 'usuário criado' })
+    return reply.status(201).send({ message: 'Treino criado com sucesso' })
   } catch (error) {
-    if (error instanceof UserAlreadyExistsError) {
-      return reply.status(400).send({ message: 'E-mail já cadastrado' })
-    }
-    throw error
+    return reply
+      .status(400)
+      .send({ message: 'Ocorreu um erro ao criar o treino' })
   }
 }

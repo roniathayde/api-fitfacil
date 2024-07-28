@@ -40,7 +40,7 @@ model UserTrains {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
-  trains   Trains @relation(fields: [trainsId], references: [id])
+  trains   Trains @relation(fields: [trainsId], references: [id], onDelete: Cascade)
   trainsId String
 
   role Role @default(TREINADOR)

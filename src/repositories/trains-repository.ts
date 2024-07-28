@@ -14,7 +14,6 @@ export class TrainsRepository implements TrainsRepositoryContract {
     }: Prisma.TrainsCreateInput,
     userId: string,
   ) {
-    console.log()
     const train = await prisma.trains.create({
       data: {
         title,
@@ -43,16 +42,48 @@ export class TrainsRepository implements TrainsRepositoryContract {
         trainsId: true, // Apenas selecionando o campo trainsId
       },
     })
-
+    // console.log('USERTRAINS', userTrains)
     // Extraindo apenas os trainsId
-    const trainIds = userTrains.map((ut) => ut.trainsId)
 
     const trains = await prisma.trains.findMany({
       where: {
-        id: { in: trainIds }, // Busca os Trains que têm IDs correspondentes
+        id: {
+          in: userTrains.map((ut) => ut.trainsId),
+        }, // Busca os Trains que têm IDs correspondentes
+      },
+    })
+    // console.log('trains', trains)
+    return trains
+  }
+
+  async getTrainById(trainId: string) {
+    const train = await prisma.trains.findFirst({
+      where: {
+        id: trainId,
       },
     })
 
-    return trains
+    return train
+  }
+
+  async deleteTrain(trainId: string) {
+    const train = await prisma.trains.delete({
+      where: {
+        id: trainId,
+      },
+    })
+
+    return train
+  }
+
+  async updateTrain(data: Prisma.TrainsUpdateInput, trainId: string) {
+    const train = await prisma.trains.update({
+      where: {
+        id: trainId,
+      },
+      data,
+    })
+
+    return train
   }
 }

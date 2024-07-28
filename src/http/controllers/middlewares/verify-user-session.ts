@@ -4,6 +4,10 @@ import dayjs from 'dayjs'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import jwt from 'jsonwebtoken'
 
+export interface UserPayload {
+  sub: string // ou qualquer outro campo que você precise
+}
+
 export async function verifyJwt(request: FastifyRequest, reply: FastifyReply) {
   try {
     const DATE_NOW = dayjs()
@@ -28,7 +32,7 @@ export async function verifyJwt(request: FastifyRequest, reply: FastifyReply) {
             },
             env.JWT_SECRET_KEY,
             {
-              expiresIn: '10m', // Novo JWT expira em 10 minutos
+              expiresIn: '10m',
             },
           )
 
@@ -49,7 +53,7 @@ export async function verifyJwt(request: FastifyRequest, reply: FastifyReply) {
 
       // Se o JWT é válido, armazena o usuário na requisição
       if (decoded) {
-        request.user = decoded
+        request.user = decoded as UserPayload
       }
     })
   } catch (error) {
