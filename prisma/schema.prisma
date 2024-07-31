@@ -56,7 +56,6 @@ model Trains {
   created_at      DateTime   @default(now())
   difficulty      Difficulty @default(MEDIO)
 
-  categoryId String?
   Category   Category[]
   UserTrains UserTrains[]
 }
