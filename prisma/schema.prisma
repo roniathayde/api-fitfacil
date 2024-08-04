@@ -33,6 +33,7 @@ model User {
   phone_number String
 
   UserTrains UserTrains[]
+  Invite     Invite[]
 }
 
 model UserTrains {
@@ -58,6 +59,7 @@ model Trains {
 
   Category   Category[]
   UserTrains UserTrains[]
+  Invite     Invite[]
 }
 
 model Category {
@@ -65,4 +67,16 @@ model Category {
   name     String
   trains   Trains @relation(fields: [trainsId], references: [id])
   trainsId String
+}
+
+model Invite {
+  id String @id @default(uuid())
+
+  created_at DateTime
+
+  train    Trains @relation(fields: [trainsId], references: [id])
+  trainsId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 }
