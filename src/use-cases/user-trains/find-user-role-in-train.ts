@@ -17,7 +17,7 @@ export class FindUserRoleInTrain {
       throw new TrainRelationshipNotFound()
     }
 
-    if (userTrain.role !== roleExpected) {
+    if (roleExpected === 'TREINADOR' && userTrain.role !== roleExpected) {
       throw new TrainPermissionDenied()
     }
 
